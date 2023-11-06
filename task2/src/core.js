@@ -1,51 +1,55 @@
 //Напишите функцию, которая проверяет, является ли число целым используя побитовые операторы
-function isInteger(n) {
-    return(!(n - (n & n)));
+function isInteger(n) 
+{
+    return(n | 0) === n;
 }
 
 //Напишите функцию, которая возвращает массив четных чисел от 2 до 20 включительно
-function even() {
-    let array = [];
-    for (let i = 2; i <= 20; i += 2)
-        array.push(i);
-    return array;
+function even() 
+{
+    return [...Array(10).keys()].map((i) => i * 2 + 2);
 }
 
 //Напишите функцию, считающую сумму чисел до заданного используя цикл
-function sumTo(n) {
-    let number = 0;
-    for (let i = 0; i <= n; i++) {
-        number += i;
-    }
-    return number;
+function sumTo(n) 
+{
+    let sum = 0;
+    for (let i = 0; i <= n; ++i) sum += i;
+    return sum;
 }
 
 //Напишите функцию, считающую сумму чисел до заданного используя рекурсию
-function recSumTo(n) {
-    if (n === 1)
-        return 1;
-    return n + recSumTo(n - 1);
+function recSumTo(n) 
+{
+    return n === 0 ? 0 : n + recSumTo(n - 1);
 }
 
 //Напишите функцию, считающую факториал заданного числа
-function factorial(n) {
-    return (n != 1) ? n * factorial(n - 1) : 1;
+function factorial(n) 
+{
+    return n === 0 ? 1 : factorial(n - 1) * n;
 }
 
 //Напишите функцию, которая определяет, является ли число двойкой, возведенной в степень
-function isBinary(n) {
-    return ((n != 0) && !(n & (n - 1))); //Используя побитовые операторы, проверяет биты, составляющие число
+function isBinary(n) 
+{
+    if (n === 2 || n === 1) return true;
+    return n / 2 === 2 ? true : n > 2 ? isBinary(n / 2) : false;
 }
 
 //Напишите функцию, которая находит N-е число Фибоначчи
-function fibonacci(n) {
-    let a = 1, b = 1;
-    for (let i = 3; i <= n; i++) {
-        let c = a + b;
-        a = b;
-        b = c;
+function fibonacci(n) 
+{
+    if (n === 1 || n === 2) return 1;
+    let first = 1;
+    let second = 1;
+    for (let i = 3; i <= n; ++i)
+    {
+        let tmp = first;
+        first = second;
+        second = second + tmp;
     }
-    return b;
+    return second;
 }
 
 /** Напишите функцию, которая принимает начальное значение и функцию операции
@@ -59,14 +63,19 @@ function fibonacci(n) {
  * console.log(sumFn(5)) - 15
  * console.log(sumFn(3)) - 18
  */
-function getOperationFn(initialValue, operatorFn) {
-    if (arguments.length === 1 && isFinite(initialValue)) {
-        return function (newValue) {
+function getOperationFn(initialValue, operatorFn) 
+{
+    if (arguments.length === 1 && isFinite(initialValue)) 
+    {
+        return function (newValue) 
+        {
             return initialValue;
         };
     }
-    if (arguments.length === 2 && isFinite(initialValue) && typeof operatorFn === 'function') {
-        return function (newValue) {
+    if (arguments.length === 2 && isFinite(initialValue) && typeof operatorFn === 'function') 
+    {
+        return function (newValue) 
+        {
             initialValue = operatorFn(initialValue, newValue);
             return initialValue;
         };
@@ -89,11 +98,14 @@ function getOperationFn(initialValue, operatorFn) {
  * console.log(generator()); // 7
  * console.log(generator()); // 9
  */
-function sequence(start = 0, step = 1) {
-    start -= step;
-    return function generator() {
-        return (start += step);
-    };
+function sequence(start = 0, step = 1) 
+{
+    let r = start - step;
+    return function ()
+    {
+        p += step;
+        return p;
+    }
 }
 
 /**
@@ -110,24 +122,22 @@ function sequence(start = 0, step = 1) {
  * deepEqual({arr: [22, 33], text: 'text'}, {arr: [22, 33], text: 'text'}) // true
  * deepEqual({arr: [22, 33], text: 'text'}, {arr: [22, 3], text: 'text2'}) // false
  */
-function deepEqual(firstObject, secondObject) {
+function deepEqual(firstObject, secondObject) 
+{
     if (Object.is(firstObject, secondObject)) return true;
-
-    if((typeof firstObject != "object") || (typeof secondObject != "object") || (firstObject === null) || (secondObject === null)) return firstObject === secondObject;
-
-    else {
-
-      if (Object.keys(firstObject).length != Object.keys(secondObject).length) return false;
-
-      for (let key in firstObject) {
-        if (secondObject.hasOwnProperty(key)) {
-          if (!deepEqual(firstObject[key], secondObject[key]))
-            return false;
+    if ((firstObject !== Object(firstObject)) || (secondObject !== Object(secondObject)) || (firstObject === null) || (secondObject === null)) return firstObject === secondObject;
+    else 
+    {
+        if (Object.keys(firstObject).length != Object.keys(secondObject).length) return false;
+        for (let h in firstObject)
+        {
+            if (secondObject.hasOwnProperty(h))
+            {
+                if (!deepEqual(firstObject[h], secondObject[h])) return false;
+            }
+            else return false;
         }
-        else
-          return false;
-      }
-      return true;
+        return true;
     }
 }
 
